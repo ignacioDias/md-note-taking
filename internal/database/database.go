@@ -3,16 +3,18 @@ package database
 import "github.com/jmoiron/sqlx"
 
 type Database struct {
-	DB       *sqlx.DB
-	UserRepo *UserRepository
-	NoteRepo *NoteRepository
+	DB          *sqlx.DB
+	UserRepo    *UserRepository
+	NoteRepo    *NoteRepository
+	SessionRepo *SessionRepository
 }
 
 func NewDatabase(db *sqlx.DB) *Database {
 	return &Database{
-		DB:       db,
-		UserRepo: &UserRepository{db: db},
-		NoteRepo: &NoteRepository{db: db},
+		DB:          db,
+		UserRepo:    &UserRepository{db: db},
+		NoteRepo:    &NoteRepository{db: db},
+		SessionRepo: &SessionRepository{db: db},
 	}
 }
 
@@ -34,7 +36,7 @@ CREATE TABLE users (
     id          SERIAL PRIMARY KEY,
     email       TEXT UNIQUE NOT NULL,
     name        TEXT,
-    created_at  TIMESTAMP DEFAULT NOW(),
+    created_at  TIMESTAMPTZ DEFAULT NOW() AT TIME ZONE 'UTC',
     hashed_password TEXT NOT NULL,
     profile_picture TEXT
 );`
@@ -43,8 +45,8 @@ var createSessionsTable string = `
 CREATE TABLE sessions (
     id TEXT PRIMARY KEY,              
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    created_at TIMESTAMP DEFAULT NOW(),
-    expires_at TIMESTAMP NOT NULL
+    created_at TIMESTAMPTZ DEFAULT NOW() AT TIME ZONE 'UTC',
+    expires_at TIMESTAMPTZ NOT NULL
 );
 CREATE INDEX idx_sessions_user_id ON sessions(user_id);
 CREATE INDEX idx_sessions_expires ON sessions(expires_at);`

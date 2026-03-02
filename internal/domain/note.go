@@ -13,8 +13,10 @@ type Note struct {
 
 func NewNote(userID int64, title string, content string) *Note {
 	return &Note{
-		UserID:  userID,
-		Title:   title,
-		Content: content,
+		UserID:    userID,
+		Title:     title,
+		Content:   content,
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
 	}
 }
