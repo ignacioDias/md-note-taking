@@ -52,26 +52,11 @@ func (nRepo *NoteRepository) FindNotesByUserID(ctx context.Context, userID int64
 func (nRepo *NoteRepository) UpdateNoteByIDAndUserID(ctx context.Context, newNote *domain.Note, userID, id int64) error {
 	query := `UPDATE notes SET title = $1, content = $2 WHERE id = $3 AND user_id = $4`
 	result, err := nRepo.db.ExecContext(ctx, query, newNote.Title, newNote.Content, id, userID)
-	return checkQueryResult(result, err)
+	return CheckQueryResult(result, err)
 }
 
 func (nRepo *NoteRepository) DeleteNoteByIDAndUserID(ctx context.Context, userID, id int64) error {
 	query := `DELETE FROM notes WHERE id = $1 AND user_id = $2`
 	result, err := nRepo.db.ExecContext(ctx, query, id, userID)
-	return checkQueryResult(result, err)
-}
-
-func checkQueryResult(result sql.Result, err error) error {
-	if err != nil {
-		return err
-	}
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		return err
-	}
-
-	if rowsAffected == 0 {
-		return ErrNoteNotFound
-	}
-	return nil
+	return CheckQueryResult(result, err)
 }
