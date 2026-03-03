@@ -53,7 +53,7 @@ func (noteHandler *NoteHandler) GetNote(w http.ResponseWriter, r *http.Request) 
 	}
 
 	note, err := noteHandler.noteRepo.FindNoteByIDAndUserID(r.Context(), userID, idValue)
-	if ok := isNoteActionValid(w, err, "find"); !ok {
+	if ok := isActionValid(w, err, "find"); !ok {
 		return
 	}
 	Encode(w, note)
@@ -69,7 +69,7 @@ func (noteHandler *NoteHandler) DeleteNote(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	err := noteHandler.noteRepo.DeleteNoteByIDAndUserID(r.Context(), userID, idValue)
-	if ok := isNoteActionValid(w, err, "delete"); !ok {
+	if ok := isActionValid(w, err, "find"); !ok {
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)
@@ -92,7 +92,7 @@ func (noteHandler *NoteHandler) UpdateNote(w http.ResponseWriter, r *http.Reques
 	}
 
 	note, err := noteHandler.noteRepo.FindNoteByIDAndUserID(r.Context(), userID, idValue)
-	if ok := isNoteActionValid(w, err, "find"); !ok {
+	if ok := isActionValid(w, err, "find"); !ok {
 		return
 	}
 	if newNote.Title != nil && *newNote.Title != "" {
@@ -102,7 +102,7 @@ func (noteHandler *NoteHandler) UpdateNote(w http.ResponseWriter, r *http.Reques
 		note.Content = *newNote.Content
 	}
 	err = noteHandler.noteRepo.UpdateNoteByIDAndUserID(r.Context(), note, userID, idValue)
-	if ok := isNoteActionValid(w, err, "update"); !ok {
+	if ok := isActionValid(w, err, "find"); !ok {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -124,7 +124,7 @@ func (noteHandler *NoteHandler) GetNotesPerUser(w http.ResponseWriter, r *http.R
 	totalPages := int((total + int64(limit) - 1) / int64(limit))
 	page := (offset / limit) + 1
 	notes, err := noteHandler.noteRepo.FindNotesByUserID(r.Context(), userID, limit, offset)
-	if ok := isNoteActionValid(w, err, "find"); !ok {
+	if ok := isActionValid(w, err, "find"); !ok {
 		return
 	}
 	response := PaginatedResponse{
@@ -138,7 +138,7 @@ func (noteHandler *NoteHandler) GetNotesPerUser(w http.ResponseWriter, r *http.R
 	Encode(w, response)
 }
 
-func isNoteActionValid(w http.ResponseWriter, err error, action string) bool {
+func isActionValid(w http.ResponseWriter, err error, action string) bool {
 	if err == nil {
 		return true
 	}

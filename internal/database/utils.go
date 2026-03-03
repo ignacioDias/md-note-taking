@@ -1,6 +1,11 @@
 package database
 
-import "database/sql"
+import (
+	"database/sql"
+	"errors"
+)
+
+var ErrNotFound = errors.New("Not found")
 
 func CheckQueryResult(result sql.Result, err error) error {
 	if err != nil {
@@ -12,7 +17,7 @@ func CheckQueryResult(result sql.Result, err error) error {
 	}
 
 	if rowsAffected == 0 {
-		return ErrNoteNotFound
+		return ErrNotFound
 	}
 	return nil
 }

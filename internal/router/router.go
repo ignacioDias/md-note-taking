@@ -16,6 +16,7 @@ type Router struct {
 func (r *Router) SetupRoutes() *http.ServeMux {
 
 	r.mux.HandleFunc("POST /api/auth/register", r.userHandler.LoginUser)
+	r.mux.HandleFunc("POST /api/auth/logout", r.userHandler.LogoutUser)
 	r.mux.HandleFunc("POST /api/auth/login", r.userHandler.RegisterUser)
 
 	r.mux.HandleFunc("GET /api/me", r.authMiddleware.AuthenticationMiddleware(r.userHandler.GetUser))

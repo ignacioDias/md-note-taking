@@ -43,5 +43,19 @@ func (sessRepo *SessionRepository) FindSessionByID(ctx context.Context, id strin
 func (sessRepo *SessionRepository) DeleteSessionByID(ctx context.Context, id string) error {
 	query := "DELETE FROM sessions WHERE id = $1"
 	result, err := sessRepo.db.ExecContext(ctx, query, id)
-	return CheckQueryResult(result, err)
+	ret := CheckQueryResult(result, err)
+	if ret == ErrNotFound {
+		return ErrSessionNotFound
+	}
+	return ret
+}
+
+func (sessRepo *SessionRepository) DeleteSessionsByUserID(ctx context.Context, userID int64) error {
+	query := "DELETE FROM sessions WHERE user_id = $1"
+	result, err := sessRepo.db.ExecContext(ctx, query, userID)
+	ret := CheckQueryResult(result, err)
+	if ret == ErrNotFound {
+		return ErrSessionNotFound
+	}
+	return ret
 }

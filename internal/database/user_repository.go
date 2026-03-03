@@ -43,11 +43,19 @@ func (userRepo *UserRepository) FindUserByID(ctx context.Context, id int64) (*do
 func (userRepo *UserRepository) DeleteUserByID(ctx context.Context, id int64) error {
 	query := "DELETE FROM users WHERE id = $1"
 	result, err := userRepo.db.ExecContext(ctx, query, id)
-	return CheckQueryResult(result, err)
+	ret := CheckQueryResult(result, err)
+	if ret == ErrNotFound {
+		return ErrUserNotFound
+	}
+	return ret
 }
 
 func (userRepo *UserRepository) UpdateUserByID(ctx context.Context, id int64, newUser *domain.User) error {
 	query := `UPDATE users SET email = $1, name = $2, hashed_password = $3, profile_picture = $4 WHERE id = $5`
 	result, err := userRepo.db.ExecContext(ctx, query, newUser.Email, newUser.Name, newUser.HashedPassword, newUser.ProfilePicture, id)
-	return CheckQueryResult(result, err)
+	ret := CheckQueryResult(result, err)
+	if ret == ErrNotFound {
+		return ErrUserNotFound
+	}
+	return ret
 }
