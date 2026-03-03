@@ -69,7 +69,7 @@ func (noteHandler *NoteHandler) DeleteNote(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	err := noteHandler.noteRepo.DeleteNoteByIDAndUserID(r.Context(), userID, idValue)
-	if ok := isActionValid(w, err, "find"); !ok {
+	if ok := isActionValid(w, err, "delete"); !ok {
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)
@@ -102,7 +102,7 @@ func (noteHandler *NoteHandler) UpdateNote(w http.ResponseWriter, r *http.Reques
 		note.Content = *newNote.Content
 	}
 	err = noteHandler.noteRepo.UpdateNoteByIDAndUserID(r.Context(), note, userID, idValue)
-	if ok := isActionValid(w, err, "find"); !ok {
+	if ok := isActionValid(w, err, "update"); !ok {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -116,7 +116,7 @@ func (noteHandler *NoteHandler) GetNotesPerUser(w http.ResponseWriter, r *http.R
 		return
 	}
 	limit, offset := GetPaginationValues(r)
-	total, err := noteHandler.noteRepo.CountNotesByUserID(userID)
+	total, err := noteHandler.noteRepo.CountNotesByUserID(r.Context(), userID)
 	if err != nil {
 		http.Error(w, "Failed to count notes", http.StatusInternalServerError)
 		return

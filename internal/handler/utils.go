@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"regexp"
 	"strconv"
 )
 
@@ -42,4 +43,33 @@ func parseIntOrDefault(value string, def int) int {
 		return def
 	}
 	return n
+}
+
+func IsValidEmail(email string) bool {
+	emailRegex := regexp.MustCompile(`^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$`)
+	return emailRegex.MatchString(email)
+}
+
+func IsValidPassword(password string) bool {
+	if len(password) < 8 || len(password) > 72 {
+		return false
+	}
+	hasUpper := false
+	hasLower := false
+	hasDigit := false
+	hasSpecial := false
+
+	for _, char := range password {
+		switch {
+		case char >= 'A' && char <= 'Z':
+			hasUpper = true
+		case char >= 'a' && char <= 'z':
+			hasLower = true
+		case char >= '0' && char <= '9':
+			hasDigit = true
+		case char == '!' || char == '@' || char == '#' || char == '$' || char == '%' || char == '^' || char == '&' || char == '*':
+			hasSpecial = true
+		}
+	}
+	return hasUpper && hasLower && hasDigit && hasSpecial
 }

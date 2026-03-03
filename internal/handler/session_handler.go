@@ -7,7 +7,6 @@ import (
 	"mdeditor/internal/domain"
 	"mdeditor/internal/middleware"
 	"net/http"
-	"regexp"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -35,11 +34,11 @@ func (sessionHandler *SessionHandler) RegisterUser(w http.ResponseWriter, r *htt
 		http.Error(w, "Invalid name: can't be empty", http.StatusBadRequest)
 		return
 	}
-	if !isValidEmail(userRequest.Email) {
+	if !IsValidEmail(userRequest.Email) {
 		http.Error(w, "Invalid email format", http.StatusBadRequest)
 		return
 	}
-	if !isValidPassword(userRequest.Password) {
+	if !IsValidPassword(userRequest.Password) {
 		http.Error(w, "Invalid password", http.StatusBadRequest)
 		return
 	}
@@ -75,33 +74,4 @@ func (sessionHandler *SessionHandler) LogoutUser(w http.ResponseWriter, r *http.
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-}
-
-func isValidEmail(email string) bool {
-	emailRegex := regexp.MustCompile(`^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$`)
-	return emailRegex.MatchString(email)
-}
-
-func isValidPassword(password string) bool {
-	if len(password) < 8 || len(password) > 72 {
-		return false
-	}
-	hasUpper := false
-	hasLower := false
-	hasDigit := false
-	hasSpecial := false
-
-	for _, char := range password {
-		switch {
-		case char >= 'A' && char <= 'Z':
-			hasUpper = true
-		case char >= 'a' && char <= 'z':
-			hasLower = true
-		case char >= '0' && char <= '9':
-			hasDigit = true
-		case char == '!' || char == '@' || char == '#' || char == '$' || char == '%' || char == '^' || char == '&' || char == '*':
-			hasSpecial = true
-		}
-	}
-	return hasUpper && hasLower && hasDigit && hasSpecial
 }
