@@ -2,18 +2,32 @@ package router
 
 import (
 	"mdeditor/internal/handler"
+	"mdeditor/internal/middleware"
 	"net/http"
 )
 
 type Router struct {
-	mux         *http.ServeMux
-	userHandler *handler.UserHandler
-	noteHandler *handler.NoteHandler
+	mux            *http.ServeMux
+	userHandler    *handler.UserHandler
+	noteHandler    *handler.NoteHandler
+	authMiddleware *middleware.AuthMiddleware
 }
 
 func (r *Router) SetupRoutes() *http.ServeMux {
 
-	r.mux.HandleFunc("GET /auth/login", r.userHandler.LoginHandler)
+	r.mux.HandleFunc("POST /api/auth/register", r.userHandler.LoginUser)
+	r.mux.HandleFunc("POST /api/auth/login", r.userHandler.RegisterUser)
+
+	r.mux.HandleFunc("GET /api/me", r.authMiddleware.AuthenticationMiddleware(r.userHandler.GetUser))
+	r.mux.HandleFunc("PUT /api/me", r.authMiddleware.AuthenticationMiddleware(r.userHandler.UpdateUser))
+	r.mux.HandleFunc("DELETE /api/me", r.authMiddleware.AuthenticationMiddleware(r.userHandler.DeleteUser))
+
+	r.mux.HandleFunc("POST /api/notes", r.authMiddleware.AuthenticationMiddleware(r.noteHandler.CreateNote))
+	r.mux.HandleFunc("GET /api/notes/{id}", r.authMiddleware.AuthenticationMiddleware(r.noteHandler.GetNote))
+	r.mux.HandleFunc("DELETE /api/notes/{id}", r.authMiddleware.AuthenticationMiddleware(r.noteHandler.DeleteNote))
+	r.mux.HandleFunc("PUT /api/notes/{id}", r.authMiddleware.AuthenticationMiddleware(r.noteHandler.UpdateNote))
+
+	r.mux.HandleFunc("GET /api/me/notes", r.authMiddleware.AuthenticationMiddleware(r.noteHandler.GetNotesPerUser))
 
 	return r.mux
 

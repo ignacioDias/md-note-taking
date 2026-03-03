@@ -60,3 +60,12 @@ func (nRepo *NoteRepository) DeleteNoteByIDAndUserID(ctx context.Context, userID
 	result, err := nRepo.db.ExecContext(ctx, query, id, userID)
 	return CheckQueryResult(result, err)
 }
+
+func (nRepo *NoteRepository) CountNotesByUserID(userID int64) (int64, error) {
+	var count int64
+	query := `SELECT COUNT(*) FROM notes n
+              JOIN users u ON n.user_id = u.id
+              WHERE n.user_id = $1`
+	err := nRepo.db.Get(&count, query, userID)
+	return count, err
+}
