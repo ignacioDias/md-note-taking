@@ -71,3 +71,10 @@ func (userRepo *UserRepository) UpdateUserByID(ctx context.Context, id int64, ne
 	}
 	return ret
 }
+
+func (userRepo *UserRepository) IsMailUsed(ctx context.Context, email string) (bool, error) {
+	var exists bool
+	query := `SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)`
+	err := userRepo.db.QueryRowContext(ctx, query, email).Scan(&exists)
+	return exists, err
+}

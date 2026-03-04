@@ -44,6 +44,10 @@ func (sessionHandler *SessionHandler) RegisterUser(w http.ResponseWriter, r *htt
 		http.Error(w, "Invalid email format", http.StatusBadRequest)
 		return
 	}
+	if isUsed, err := sessionHandler.userRepo.IsMailUsed(r.Context(), userRequest.Email); isUsed || err != nil {
+		http.Error(w, "Email repeated", http.StatusBadRequest)
+		return
+	}
 	if !IsValidPassword(userRequest.Password) {
 		http.Error(w, "Invalid password", http.StatusBadRequest)
 		return
@@ -80,7 +84,7 @@ func (sessionHandler *SessionHandler) LoginUser(w http.ResponseWriter, r *http.R
 		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
 		return
 	}
-	session := domain.NewSession(generateSessionID(), user.ID)
+	session := domain.NewSession(user.ID)
 	if err := sessionHandler.sessionRepo.CreateSession(r.Context(), session); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -108,9 +112,14 @@ func (sessionHandler *SessionHandler) LogoutUser(w http.ResponseWriter, r *http.
 		http.Error(w, "failed to logout", http.StatusInternalServerError)
 		return
 	}
+	http.SetCookie(w, &http.Cookie{
+		Name:     "session_id",
+		Value:    "",
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   isProduction,
+		SameSite: http.SameSiteStrictMode,
+		MaxAge:   -1,
+	})
 	w.WriteHeader(http.StatusOK)
-}
-
-func generateSessionID() string {
-	return ""
 }

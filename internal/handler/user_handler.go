@@ -64,6 +64,10 @@ func (userHandler *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Reques
 			http.Error(w, "Invalid email to update", http.StatusBadRequest)
 			return
 		}
+		if isUsed, err := userHandler.userRepo.IsMailUsed(r.Context(), *userUpdateReq.Email); isUsed || err != nil {
+			http.Error(w, "Email repeated", http.StatusBadRequest)
+			return
+		}
 	}
 
 	if userUpdateReq.NewPassword != nil && *userUpdateReq.NewPassword != "" {
