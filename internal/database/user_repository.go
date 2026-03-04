@@ -40,6 +40,18 @@ func (userRepo *UserRepository) FindUserByID(ctx context.Context, id int64) (*do
 	return &user, nil
 }
 
+func (userRepo *UserRepository) FindUserByEmail(ctx context.Context, email string) (*domain.User, error) {
+	var user domain.User
+	query := "SELECT id, email, name, created_at, hashed_password, profile_picture FROM users WHERE email = $1"
+	if err := userRepo.db.GetContext(ctx, &user, query, email); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrUserNotFound
+		}
+		return nil, err
+	}
+	return &user, nil
+}
+
 func (userRepo *UserRepository) DeleteUserByID(ctx context.Context, id int64) error {
 	query := "DELETE FROM users WHERE id = $1"
 	result, err := userRepo.db.ExecContext(ctx, query, id)

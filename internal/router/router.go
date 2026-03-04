@@ -14,6 +14,16 @@ type Router struct {
 	authMiddleware *middleware.AuthMiddleware
 }
 
+func NewRouter(userHandler *handler.UserHandler, sessionHandler *handler.SessionHandler, noteHandler *handler.NoteHandler, authMiddw *middleware.AuthMiddleware) *Router {
+	return &Router{
+		mux:            http.NewServeMux(),
+		userHandler:    userHandler,
+		sessionHandler: sessionHandler,
+		noteHandler:    noteHandler,
+		authMiddleware: authMiddw,
+	}
+}
+
 func (r *Router) SetupRoutes() *http.ServeMux {
 
 	r.mux.HandleFunc("POST /api/auth/register", r.sessionHandler.RegisterUser)

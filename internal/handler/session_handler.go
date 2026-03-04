@@ -2,11 +2,11 @@ package handler
 
 import (
 	"encoding/json"
-	"html/template"
 	"mdeditor/internal/database"
 	"mdeditor/internal/domain"
 	"mdeditor/internal/middleware"
 	"net/http"
+	"os"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -22,7 +22,13 @@ type UserRegisterRequest struct {
 	Password string `json:"password"`
 }
 
+type UserLoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 var DEFAULT_PIC string = "https://origin.giantbomb.com/a/uploads/scale_medium/8/82962/1543003-adventure_time_with_finn_and_jake_john_dimaggio_2.jpg"
+var isProduction bool = os.Getenv("ENV") == "production"
 
 func (sessionHandler *SessionHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 	var userRequest UserRegisterRequest
@@ -56,12 +62,41 @@ func (sessionHandler *SessionHandler) RegisterUser(w http.ResponseWriter, r *htt
 }
 
 func (sessionHandler *SessionHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("login.html")
+	var loginReq UserLoginRequest
+	if err := json.NewDecoder(r.Body).Decode(&loginReq); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	user, err := sessionHandler.userRepo.FindUserByEmail(r.Context(), loginReq.Email)
+	if err == database.ErrUserNotFound {
+		http.Error(w, "Email not found", http.StatusNotFound)
+		return
+	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	t.Execute(w, nil)
+	if err := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(loginReq.Password)); err != nil {
+		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		return
+	}
+	session := domain.NewSession(generateSessionID(), user.ID)
+	if err := sessionHandler.sessionRepo.CreateSession(r.Context(), session); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:     "session_id",
+		Value:    session.ID,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   isProduction, // false only in localhost dev
+		SameSite: http.SameSiteStrictMode,
+		Expires:  session.ExpiresAt,
+	})
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(user)
 }
 func (sessionHandler *SessionHandler) LogoutUser(w http.ResponseWriter, r *http.Request) {
 	userID, ok := middleware.GetUserID(r)
@@ -74,4 +109,8 @@ func (sessionHandler *SessionHandler) LogoutUser(w http.ResponseWriter, r *http.
 		return
 	}
 	w.WriteHeader(http.StatusOK)
+}
+
+func generateSessionID() string {
+	return ""
 }
