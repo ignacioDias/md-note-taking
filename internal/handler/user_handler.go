@@ -22,6 +22,12 @@ type UserUpdateRequest struct {
 	ProfilePicture *string `json:"profilePicture"`
 }
 
+func NewUserHandler(userRepo *database.UserRepository) *UserHandler {
+	return &UserHandler{
+		userRepo: userRepo,
+	}
+}
+
 func (userHandler *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	userID, ok := middleware.GetUserID(r)
 	if !ok {

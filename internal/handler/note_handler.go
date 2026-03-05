@@ -23,6 +23,13 @@ type UpdateNote struct {
 	Content *string `json:"content" db:"content"`
 }
 
+func NewNoteHandler(noteRepo *database.NoteRepository, redisClient *redis.Client) *NoteHandler {
+	return &NoteHandler{
+		noteRepo:    noteRepo,
+		redisClient: redisClient,
+	}
+}
+
 func (noteHandler *NoteHandler) CreateNote(w http.ResponseWriter, r *http.Request) {
 	var note domain.Note
 	if err := json.NewDecoder(r.Body).Decode(&note); err != nil {

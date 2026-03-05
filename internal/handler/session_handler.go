@@ -30,6 +30,13 @@ type UserLoginRequest struct {
 var DEFAULT_PIC string = "https://origin.giantbomb.com/a/uploads/scale_medium/8/82962/1543003-adventure_time_with_finn_and_jake_john_dimaggio_2.jpg"
 var isProduction bool = os.Getenv("ENV") == "production"
 
+func NewSessionHandler(userRepo *database.UserRepository, sessionRepo *database.SessionRepository) *SessionHandler {
+	return &SessionHandler{
+		userRepo:    userRepo,
+		sessionRepo: sessionRepo,
+	}
+}
+
 func (sessionHandler *SessionHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 	var userRequest UserRegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&userRequest); err != nil {

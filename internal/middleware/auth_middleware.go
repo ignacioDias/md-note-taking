@@ -14,6 +14,12 @@ type AuthMiddleware struct {
 
 const userIDKey contextKey = "userID"
 
+func NewAuthMiddleware(sessionRepo *database.SessionRepository) *AuthMiddleware {
+	return &AuthMiddleware{
+		sessionRepo: sessionRepo,
+	}
+}
+
 func (auth *AuthMiddleware) AuthenticationMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("session_id")

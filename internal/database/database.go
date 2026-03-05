@@ -36,20 +36,22 @@ CREATE TABLE IF NOT EXISTS users (
     id          SERIAL PRIMARY KEY,
     email       TEXT UNIQUE NOT NULL,
     name        TEXT,
-    created_at  TIMESTAMPTZ DEFAULT NOW() AT TIME ZONE 'UTC',
+    created_at  TIMESTAMPTZ DEFAULT NOW(),
     hashed_password TEXT NOT NULL,
     profile_picture TEXT
 );`
 
-var createSessionsTable string = `
+var createSessionsTable = `
 CREATE TABLE IF NOT EXISTS sessions (
-    id TEXT PRIMARY KEY,              
+    id TEXT PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    created_at TIMESTAMPTZ DEFAULT NOW() AT TIME ZONE 'UTC',
+    created_at TIMESTAMPTZ DEFAULT NOW(),
     expires_at TIMESTAMPTZ NOT NULL
-);
-CREATE INDEX idx_sessions_user_id ON sessions(user_id);
-CREATE INDEX idx_sessions_expires ON sessions(expires_at);`
+);`
+
+var createSessionsIndexes = `
+CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
+CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires_at);`
 
 func (d *Database) Init() error {
 	_, err := d.DB.Exec(createUsersTable)
@@ -61,6 +63,14 @@ func (d *Database) Init() error {
 		return err
 	}
 	_, err = d.DB.Exec(createSessionsTable)
+	if err != nil {
+		return err
+	}
+	_, err = d.DB.Exec(`CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id)`)
+	if err != nil {
+		return err
+	}
+	_, err = d.DB.Exec(`CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires_at)`)
 	if err != nil {
 		return err
 	}
