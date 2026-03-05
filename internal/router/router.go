@@ -26,9 +26,20 @@ func NewRouter(userHandler *handler.UserHandler, sessionHandler *handler.Session
 
 func (r *Router) SetupRoutes() *http.ServeMux {
 
-	r.mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
+	r.mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/index.html")
 	})
+	r.mux.HandleFunc("GET /login", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/login.html")
+	})
+	r.mux.HandleFunc("GET /register", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/register.html")
+	})
+
+	r.mux.HandleFunc("GET /dashboard", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/dashboard.html")
+	})
+
 	r.mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
 	r.mux.HandleFunc("POST /api/auth/register", r.sessionHandler.RegisterUser)
