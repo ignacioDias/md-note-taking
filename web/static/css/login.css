@@ -4,10 +4,18 @@
     box-sizing: border-box;
 }
 
+:root {
+    --color-primary: #000000;
+    --color-secondary: #ffffff;
+    --color-accent: #333333;
+    --color-border: #000000;
+    --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-    background-color: #ffffff;
-    color: #000000;
+    font-family: var(--font-main);
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -26,18 +34,18 @@ body {
 }
 
 .form-login {
-    background-color: #ffffff;
+    background-color: var(--color-secondary);
     padding: 3rem;
-    border: 1px solid #000000;
-    border-radius: 0;
+    border: 2px solid var(--color-primary);
 }
 
 .form-login h2 {
     font-size: 2rem;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 2rem;
-    color: #000000;
+    color: var(--color-primary);
     letter-spacing: -0.02em;
+    text-transform: uppercase;
 }
 
 .form-group {
@@ -47,28 +55,27 @@ body {
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #000000;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-primary);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
 }
 
 .form-group input {
     width: 100%;
     padding: 0.875rem;
-    font-family: inherit;
+    font-family: var(--font-main);
     font-size: 1rem;
-    border: 1px solid #000000;
-    border-radius: 0;
-    background-color: #ffffff;
-    color: #000000;
+    border: 1px solid var(--color-primary);
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
     transition: all 0.2s ease;
 }
 
 .form-group input:focus {
     outline: none;
-    border: 2px solid #000000;
+    border: 2px solid var(--color-primary);
     padding: calc(0.875rem - 1px);
 }
 
@@ -78,37 +85,36 @@ body {
 
 button {
     width: 100%;
-    font-family: inherit;
-    font-size: 1rem;
-    font-weight: 500;
-    padding: 0.875rem;
+    font-family: var(--font-main);
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 1rem;
     margin-top: 0.5rem;
-    border: 2px solid #000000;
-    border-radius: 0;
+    border: 2px solid var(--color-primary);
     cursor: pointer;
     transition: all 0.2s ease;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
 }
 
 button[type="submit"] {
-    background-color: #000000;
-    color: #ffffff;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
 }
 
 button[type="submit"]:hover {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
 }
 
 .register-button {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
 }
 
 .register-button:hover {
-    background-color: #000000;
-    color: #ffffff;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
 }
 
 button:active {
@@ -117,16 +123,14 @@ button:active {
 
 .alert {
     padding: 1rem;
-    border: 1px solid #000000;
-    background-color: #ffffff;
-    color: #000000;
-    border-radius: 0;
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
 }
 
 .alert-danger {
-    background-color: #000000;
-    color: #ffffff;
-    border-color: #000000;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
 }
 
 .btn-close {
@@ -134,7 +138,7 @@ button:active {
     border: none;
     font-size: 1.5rem;
     line-height: 1;
-    color: #ffffff;
+    color: var(--color-secondary);
     opacity: 1;
     padding: 0;
     width: auto;
@@ -153,6 +157,7 @@ button:active {
     
     .form-login {
         padding: 2rem 1.5rem;
+        border: 1px solid var(--color-primary);
     }
     
     .form-login h2 {
