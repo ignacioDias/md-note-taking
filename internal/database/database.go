@@ -32,7 +32,7 @@ CREATE INDEX IF NOT EXISTS idx_notes_user_created
 ON notes (user_id, created_at DESC);
 `
 var createUsersTable string = `
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id          SERIAL PRIMARY KEY,
     email       TEXT UNIQUE NOT NULL,
     name        TEXT,
@@ -42,7 +42,7 @@ CREATE TABLE users (
 );`
 
 var createSessionsTable string = `
-CREATE TABLE sessions (
+CREATE TABLE IF NOT EXISTS sessions (
     id TEXT PRIMARY KEY,              
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMPTZ DEFAULT NOW() AT TIME ZONE 'UTC',
