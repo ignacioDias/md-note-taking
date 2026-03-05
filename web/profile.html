@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link rel="stylesheet" href="/static/css/profile.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a class="dashboard-btn" type="button">Inicio</a>
+            <a class="settings-btn" type="button">Ajustes</a>
+            <a class="profile-btn" type="button">Perfil</a>
+            <a class="logout-btn" type="button">Salir</a>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <div class="profile-content">
+            <h1>Mi Perfil</h1>
+            
+            <div class="profile-card">
+                <div class="profile-picture-container">
+                    <img id="profilePicture" src="" alt="Profile Picture" class="profile-picture">
+                </div>
+                
+                <div class="profile-info">
+                    <div class="info-item">
+                        <label>Nombre:</label>
+                        <span id="userName">Cargando...</span>
+                    </div>
+                    
+                    <div class="info-item">
+                        <label>Email:</label>
+                        <span id="userEmail">Cargando...</span>
+                    </div>
+                </div>
+                
+                <div class="profile-actions">
+                    <button id="profileSettingsBtn" class="primary">Configuración de Perfil</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="/static/js/theme.js"></script>
+    <script src="/static/js/profile.js"></script>
+</body>
+</html>

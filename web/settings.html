@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajustes</title>
+    <link rel="stylesheet" href="/static/css/settings.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Ajustes</h1>
+        <nav class="nav">
+            <button class="dashboard-btn">Inicio</button>
+            <button class="logout-btn">Salir</button>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <div class="settings-content">
+            <section class="settings-section">
+                <h2>Apariencia</h2>
+                
+                <div class="setting-item">
+                    <label for="bgColor">Color de fondo:</label>
+                    <div class="color-options">
+                        <button class="color-preset" data-color="#ffffff" style="background-color: #ffffff;" title="Blanco">Blanco</button>
+                        <button class="color-preset" data-color="#c4c4c4" style="background-color: #c4c4c4;" title="Gris claro">Gris claro</button>
+                        <button class="color-preset" data-color="#23b59a" style="background-color: #23b59a;" title="Verde agua">Verde agua</button>
+                        <button class="color-preset" data-color="#151515" style="background-color: #151515;" title="Oscuro">Oscuro</button>
+                    </div>
+                    <div class="custom-color">
+                        <label for="customColor">Color personalizado:</label>
+                        <input type="color" id="customColor" value="#ffffff">
+                        <button id="applyCustomColor">Aplicar</button>
+                    </div>
+                    <button id="resetColor" class="reset-btn">Restablecer a predeterminado</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="./static/js/settings.js"></script>
+    <script src="/static/js/theme.js"></script>
+</body>
+</html>

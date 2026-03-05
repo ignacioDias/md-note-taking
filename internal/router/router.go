@@ -35,9 +35,14 @@ func (r *Router) SetupRoutes() *http.ServeMux {
 	r.mux.HandleFunc("GET /register", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/register.html")
 	})
-
 	r.mux.HandleFunc("GET /dashboard", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/dashboard.html")
+	})
+	r.mux.HandleFunc("GET /me", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/profile.html")
+	})
+	r.mux.HandleFunc("GET /settings", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/settings.html")
 	})
 
 	r.mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
