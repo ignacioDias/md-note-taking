@@ -14,6 +14,10 @@ const $profileBtn = document.querySelector(".profile-btn")
 const $dashboardBtn = document.querySelector(".dashboard-btn")
 const $createNoteBtn = document.querySelector(".create-note-btn")
 const $notesContainer = document.getElementById("notes-container")
+const $createNoteOverlay = document.querySelector(".create-note-overlay")
+const $noteTitleInput = document.querySelector(".note-title-input")
+const $createNoteButton = document.querySelector(".create-note-button")
+const $cancelNoteButton = document.querySelector(".cancel-note-button")
 
 async function loadNotes() {
     try {
@@ -55,6 +59,13 @@ function displayNotes(notes) {
             </div>
         </div>
     `).join('');
+    
+    document.querySelectorAll('.note-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            const noteId = card.dataset.noteId;
+            window.location.href = `/notes/${noteId}`;
+        });
+    });
     
     document.querySelectorAll('.edit-note-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -162,6 +173,60 @@ $dashboardBtn.addEventListener("click", () => {
 })
 
 $createNoteBtn.addEventListener("click", () => {
-    // TODO: Implement note creation flow
-    alert("Funcionalidad de crear nota próximamente")
+    $createNoteOverlay.style.display = "flex"
+    $noteTitleInput.value = ""
+    $noteTitleInput.focus()
+})
+
+$cancelNoteButton.addEventListener("click", () => {
+    $createNoteOverlay.style.display = "none"
+})
+
+$createNoteOverlay.addEventListener("click", (e) => {
+    if (e.target === $createNoteOverlay) {
+        $createNoteOverlay.style.display = "none"
+    }
+})
+
+$createNoteButton.addEventListener("click", async () => {
+    const title = $noteTitleInput.value.trim()
+    
+    if (!title) {
+        alert("Por favor ingresa un título")
+        return
+    }
+    
+    try {
+        const response = await fetch("/api/notes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                title: title,
+                content: ""
+            })
+        })
+        
+        if (response.ok) {
+            const newNote = await response.json()
+            $createNoteOverlay.style.display = "none"
+            // Redirect to edit the new note
+            window.location.href = `/notes/${newNote.id}`
+        } else {
+            const errorText = await response.text()
+            alert("Error al crear la nota: " + errorText)
+        }
+    } catch (error) {
+        console.error("Error creating note:", error)
+        alert("Error al crear la nota")
+    }
+})
+
+// Allow pressing Enter to create note
+$noteTitleInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        $createNoteButton.click()
+    }
 })
