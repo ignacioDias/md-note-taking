@@ -181,7 +181,6 @@ func (noteHandler *NoteHandler) GetNotesPerUser(w http.ResponseWriter, r *http.R
 		Total:      total,
 		TotalPages: totalPages,
 	}
-	w.Header().Set("Cache-Control", "private, max-age=300")
 	Encode(w, response)
 	data, _ := json.Marshal(response)
 	noteHandler.redisClient.Set(r.Context(), cacheKey, data, 5*time.Minute)

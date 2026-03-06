@@ -41,6 +41,9 @@ func (r *Router) SetupRoutes() *http.ServeMux {
 	r.mux.HandleFunc("GET /me", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/profile.html")
 	})
+	r.mux.HandleFunc("GET /me/settings", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/profile-settings.html")
+	})
 	r.mux.HandleFunc("GET /settings", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/settings.html")
 	})

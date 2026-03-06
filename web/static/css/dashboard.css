@@ -20,7 +20,6 @@ body {
     min-height: 100vh;
 }
 
-/* Header */
 .header {
     display: flex;
     justify-content: space-between;
@@ -308,3 +307,4 @@ button.primary:hover {
         font-size: 0.75rem;
     }
 }
+
