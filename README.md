@@ -85,6 +85,7 @@ The application will be available at `http://localhost:8080` (or the configured 
 - `/dashboard` - Main dashboard (requires authentication)
 - `/settings` - User settings and theme customization (requires authentication)
 - `/me` - User profile (requires authentication)
+- `/notes/{id}` - Note editor + viewer (requires authentication)
 
 ### API Endpoints
 
