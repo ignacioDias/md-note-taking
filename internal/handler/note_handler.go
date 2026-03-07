@@ -126,10 +126,10 @@ func (noteHandler *NoteHandler) UpdateNote(w http.ResponseWriter, r *http.Reques
 	if ok := isActionValid(w, err, "find"); !ok {
 		return
 	}
-	if newNote.Title != nil && *newNote.Title != "" {
+	if newNote.Title != nil {
 		note.Title = *newNote.Title
 	}
-	if newNote.Content != nil && *newNote.Content != "" {
+	if newNote.Content != nil {
 		note.Content = *newNote.Content
 	}
 	err = noteHandler.noteRepo.UpdateNoteByIDAndUserID(r.Context(), note, userID, idValue)

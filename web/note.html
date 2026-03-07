@@ -7,10 +7,25 @@
     <link rel="stylesheet" href="/static/css/note.css">
 </head>
 <body>
-    <input type="text" id="title" placeholder="Título..." />
-    <textarea id="editor"></textarea>
-    <span id="save-status"></span>
+    <div class="toolbar">
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <button class="come-back">Volver</button>
+            <button class="toggle-mode" id="toggleMode">Preview</button>
+        </div>
+        <span id="save-status">✓ Guardado</span>
+    </div>
+    
+    <div id="editorMode" class="mode-container active">
+        <input type="text" id="title" placeholder="Título..." />
+        <textarea id="editor" placeholder="Escribe tu contenido en markdown..."></textarea>
+    </div>
+    
+    <div id="viewerMode" class="mode-container">
+        <h1 id="viewerTitle"></h1>
+        <div id="viewerContent" class="markdown-body"></div>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="/static/js/note.js"></script>
     <script src="/static/js/theme.js"></script>
 </body>

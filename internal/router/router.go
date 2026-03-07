@@ -47,7 +47,9 @@ func (r *Router) SetupRoutes() *http.ServeMux {
 	r.mux.HandleFunc("GET /settings", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/settings.html")
 	})
-
+	r.mux.HandleFunc("GET /notes/{id}", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/note.html")
+	})
 	r.mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
 	r.mux.HandleFunc("POST /api/auth/register", r.sessionHandler.RegisterUser)
