@@ -14,8 +14,8 @@
 
 body {
     font-family: var(--font-main);
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -34,16 +34,16 @@ body {
 }
 
 .form-register {
-    background-color: var(--color-primary);
+    background-color: var(--color-secondary);
     padding: 3rem;
-    border: 2px solid var(--color-secondary);
+    border: 2px solid var(--color-primary);
 }
 
 .form-register h2 {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 2rem;
-    color: var(--color-secondary);
+    color: var(--color-primary);
     letter-spacing: -0.02em;
     text-transform: uppercase;
 }
@@ -57,7 +57,7 @@ body {
     margin-bottom: 0.5rem;
     font-size: 0.75rem;
     font-weight: 600;
-    color: var(--color-secondary);
+    color: var(--color-primary);
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
@@ -67,20 +67,20 @@ body {
     padding: 0.875rem;
     font-family: var(--font-main);
     font-size: 1rem;
-    border: 1px solid var(--color-secondary);
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
+    border: 1px solid var(--color-primary);
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
     transition: all 0.2s ease;
 }
 
 .form-group input:focus {
     outline: none;
-    border: 2px solid var(--color-secondary);
+    border: 2px solid var(--color-primary);
     padding: calc(0.875rem - 1px);
 }
 
 .form-group input::placeholder {
-    color: #666666;
+    color: #999999;
 }
 
 button {
@@ -90,7 +90,7 @@ button {
     font-weight: 600;
     padding: 1rem;
     margin-top: 0.5rem;
-    border: 2px solid var(--color-secondary);
+    border: 2px solid var(--color-primary);
     cursor: pointer;
     transition: all 0.2s ease;
     text-transform: uppercase;
@@ -98,23 +98,23 @@ button {
 }
 
 button[type="submit"] {
-    background-color: var(--color-secondary);
-    color: var(--color-primary);
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
 }
 
 button[type="submit"]:hover {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
 }
 
 .login-button {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
 }
 
 .login-button:hover {
-    background-color: var(--color-secondary);
-    color: var(--color-primary);
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
 }
 
 button:active {
@@ -123,14 +123,14 @@ button:active {
 
 .alert {
     padding: 1rem;
-    border: 2px solid var(--color-secondary);
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
 }
 
 .alert-danger {
-    background-color: var(--color-secondary);
-    color: var(--color-primary);
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
 }
 
 .btn-close {
@@ -138,7 +138,7 @@ button:active {
     border: none;
     font-size: 1.5rem;
     line-height: 1;
-    color: var(--color-primary);
+    color: var(--color-secondary);
     opacity: 1;
     padding: 0;
     width: auto;
@@ -157,7 +157,7 @@ button:active {
     
     .form-register {
         padding: 2rem 1.5rem;
-        border: 1px solid var(--color-secondary);
+        border: 1px solid var(--color-primary);
     }
     
     .form-register h2 {

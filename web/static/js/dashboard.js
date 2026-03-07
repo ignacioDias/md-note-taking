@@ -13,6 +13,8 @@ const $settingsBtn = document.querySelector(".settings-btn")
 const $profileBtn = document.querySelector(".profile-btn")
 const $dashboardBtn = document.querySelector(".dashboard-btn")
 const $createNoteBtn = document.querySelector(".create-note-btn")
+const $uploadNoteBtn = document.querySelector(".upload-note-btn")
+const $mdFileInput = document.getElementById("md-file-input")
 const $notesContainer = document.getElementById("notes-container")
 const $createNoteOverlay = document.querySelector(".create-note-overlay")
 const $noteTitleInput = document.querySelector(".note-title-input")
@@ -229,4 +231,49 @@ $noteTitleInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
         $createNoteButton.click()
     }
+})
+
+$uploadNoteBtn.addEventListener("click", () => {
+    $mdFileInput.click()
+})
+
+$mdFileInput.addEventListener("change", async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    
+    if (!file.name.endsWith('.md')) {
+        alert("Por favor selecciona un archivo .md")
+        return
+    }
+    
+    try {
+        const content = await file.text()
+        
+        const response = await fetch("/api/notes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                title: "nota subida",
+                content: content
+            })
+        })
+        
+        if (response.ok) {
+            const newNote = await response.json()
+            alert("Nota subida exitosamente")
+            // Reload notes to show the new one
+            await loadNotes()
+        } else {
+            const errorText = await response.text()
+            alert("Error al subir la nota: " + errorText)
+        }
+    } catch (error) {
+        console.error("Error uploading file:", error)
+        alert("Error al leer o subir el archivo")
+    }
+    
+    e.target.value = ''
 })
