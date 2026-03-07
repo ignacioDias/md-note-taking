@@ -81,6 +81,53 @@ body {
     letter-spacing: 0.05em;
 }
 
+/* Formatting Toolbar */
+.formatting-toolbar {
+    background-color: var(--color-secondary);
+    border-bottom: 2px solid var(--color-primary);
+    padding: 0.75rem 2rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 69px; /* Height of main toolbar */
+    z-index: 99;
+}
+
+.format-btn {
+    font-family: var(--font-main);
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.format-btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+}
+
+.format-btn:active {
+    transform: translateY(1px);
+}
+
+.toolbar-divider {
+    width: 2px;
+    height: 24px;
+    background-color: var(--color-border);
+    margin: 0 0.25rem;
+}
+
 /* Mode containers */
 .mode-container {
     display: none;
@@ -121,12 +168,13 @@ body {
 #editorMode #editor {
     flex: 1;
     width: 100%;
+    min-height: 70vh;
     font-size: 1rem;
     font-family: var(--font-main);
     line-height: 1.6;
     border: 2px solid var(--color-primary);
     outline: none;
-    resize: none;
+    resize: vertical;
     background-color: var(--color-secondary);
     color: var(--color-primary);
     padding: 1.5rem;

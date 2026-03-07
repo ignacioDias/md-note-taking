@@ -15,6 +15,55 @@
         <span id="save-status">✓ Guardado</span>
     </div>
     
+    <div class="formatting-toolbar" id="formattingToolbar">
+        <button class="format-btn" data-format="h1" title="Título (H1)">
+            <strong>H1</strong>
+        </button>
+        <button class="format-btn" data-format="h2" title="Subtítulo (H2)">
+            <strong>H2</strong>
+        </button>
+        <button class="format-btn" data-format="h3" title="H3">
+            <strong>H3</strong>
+        </button>
+        <span class="toolbar-divider"></span>
+        <button class="format-btn" data-format="bold" title="Negrita">
+            <strong>B</strong>
+        </button>
+        <button class="format-btn" data-format="italic" title="Cursiva">
+            <em>I</em>
+        </button>
+        <button class="format-btn" data-format="strikethrough" title="Tachado">
+            <span style="text-decoration: line-through;">S</span>
+        </button>
+        <span class="toolbar-divider"></span>
+        <button class="format-btn" data-format="code" title="Código en línea">
+            <code>&lt;/&gt;</code>
+        </button>
+        <button class="format-btn" data-format="codeblock" title="Bloque de código">
+            <code>{ }</code>
+        </button>
+        <span class="toolbar-divider"></span>
+        <button class="format-btn" data-format="ul" title="Lista con viñetas">
+            ≡
+        </button>
+        <button class="format-btn" data-format="ol" title="Lista numerada">
+            1.
+        </button>
+        <button class="format-btn" data-format="quote" title="Cita">
+            "
+        </button>
+        <span class="toolbar-divider"></span>
+        <button class="format-btn" data-format="link" title="Enlace">
+            🔗
+        </button>
+        <button class="format-btn" data-format="image" title="Imagen">
+            🖼
+        </button>
+        <button class="format-btn" data-format="hr" title="Línea horizontal">
+            —
+        </button>
+    </div>
+    
     <div id="editorMode" class="mode-container active">
         <input type="text" id="title" placeholder="Título..." />
         <textarea id="editor" placeholder="Escribe tu contenido en markdown..."></textarea>
