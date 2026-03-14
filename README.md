@@ -4,6 +4,8 @@ A full-stack web application for creating, editing, and managing markdown notes 
 
 Project based on: https://roadmap.sh/projects/markdown-note-taking-app
 
+![preview](readme-preview.gif)
+
 ## Features
 
 - User authentication and authorization with session-based auth
